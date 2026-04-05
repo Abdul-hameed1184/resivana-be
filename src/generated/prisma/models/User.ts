@@ -65,6 +65,7 @@ export type UserCountAggregateOutputType = {
   profilePics: number
   role: number
   isOnline: number
+  refreshTokens: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -112,6 +113,7 @@ export type UserCountAggregateInputType = {
   profilePics?: true
   role?: true
   isOnline?: true
+  refreshTokens?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -200,6 +202,7 @@ export type UserGroupByOutputType = {
   profilePics: string
   role: $Enums.Role
   isOnline: boolean
+  refreshTokens: string[]
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -236,6 +239,7 @@ export type UserWhereInput = {
   profilePics?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
+  refreshTokens?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   friends?: Prisma.UserListRelationFilter
@@ -260,6 +264,7 @@ export type UserOrderByWithRelationInput = {
   profilePics?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
+  refreshTokens?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   friends?: Prisma.UserOrderByRelationAggregateInput
@@ -287,6 +292,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   profilePics?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
+  refreshTokens?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   friends?: Prisma.UserListRelationFilter
@@ -311,6 +317,7 @@ export type UserOrderByWithAggregationInput = {
   profilePics?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
+  refreshTokens?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -332,6 +339,7 @@ export type UserScalarWhereWithAggregatesInput = {
   profilePics?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  refreshTokens?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -347,6 +355,7 @@ export type UserCreateInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -371,6 +380,7 @@ export type UserUncheckedCreateInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -395,6 +405,7 @@ export type UserUpdateInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -419,6 +430,7 @@ export type UserUncheckedUpdateInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -443,6 +455,7 @@ export type UserCreateManyInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -458,6 +471,7 @@ export type UserUpdateManyMutationInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -473,8 +487,17 @@ export type UserUncheckedUpdateManyInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type UserListRelationFilter = {
@@ -498,6 +521,7 @@ export type UserCountOrderByAggregateInput = {
   profilePics?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
+  refreshTokens?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -535,6 +559,10 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserCreaterefreshTokensInput = {
+  set: string[]
 }
 
 export type UserCreateNestedManyWithoutFriendOfInput = {
@@ -575,6 +603,11 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type UserUpdaterefreshTokensInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -766,6 +799,7 @@ export type UserCreateWithoutFriendOfInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -789,6 +823,7 @@ export type UserUncheckedCreateWithoutFriendOfInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -817,6 +852,7 @@ export type UserCreateWithoutFriendsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
@@ -840,6 +876,7 @@ export type UserUncheckedCreateWithoutFriendsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
@@ -887,6 +924,7 @@ export type UserScalarWhereInput = {
   profilePics?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
+  refreshTokens?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -918,6 +956,7 @@ export type UserCreateWithoutPropertiesInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -941,6 +980,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -980,6 +1020,7 @@ export type UserUpdateWithoutPropertiesInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1003,6 +1044,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1026,6 +1068,7 @@ export type UserCreateWithoutAgentInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1049,6 +1092,7 @@ export type UserUncheckedCreateWithoutAgentInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1088,6 +1132,7 @@ export type UserUpdateWithoutAgentInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1111,6 +1156,7 @@ export type UserUncheckedUpdateWithoutAgentInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1134,6 +1180,7 @@ export type UserCreateWithoutAgentBookingsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1157,6 +1204,7 @@ export type UserUncheckedCreateWithoutAgentBookingsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1185,6 +1233,7 @@ export type UserCreateWithoutCustomerBookingsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1208,6 +1257,7 @@ export type UserUncheckedCreateWithoutCustomerBookingsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1247,6 +1297,7 @@ export type UserUpdateWithoutAgentBookingsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1270,6 +1321,7 @@ export type UserUncheckedUpdateWithoutAgentBookingsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1304,6 +1356,7 @@ export type UserUpdateWithoutCustomerBookingsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1327,6 +1380,7 @@ export type UserUncheckedUpdateWithoutCustomerBookingsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1350,6 +1404,7 @@ export type UserCreateWithoutConversationsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1373,6 +1428,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1417,6 +1473,7 @@ export type UserCreateWithoutMessagesInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1440,6 +1497,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1479,6 +1537,7 @@ export type UserUpdateWithoutMessagesInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1502,6 +1561,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1525,6 +1585,7 @@ export type UserCreateWithoutReviewsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
@@ -1548,6 +1609,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   profilePics?: string
   role?: $Enums.Role
   isOnline?: boolean
+  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
@@ -1587,6 +1649,7 @@ export type UserUpdateWithoutReviewsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1610,6 +1673,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1633,6 +1697,7 @@ export type UserUpdateWithoutFriendOfInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1656,6 +1721,7 @@ export type UserUncheckedUpdateWithoutFriendOfInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1679,6 +1745,7 @@ export type UserUncheckedUpdateManyWithoutFriendOfInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1694,6 +1761,7 @@ export type UserUpdateWithoutFriendsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
@@ -1717,6 +1785,7 @@ export type UserUncheckedUpdateWithoutFriendsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
@@ -1740,6 +1809,7 @@ export type UserUncheckedUpdateManyWithoutFriendsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1755,6 +1825,7 @@ export type UserUpdateWithoutConversationsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
@@ -1778,6 +1849,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
@@ -1801,6 +1873,7 @@ export type UserUncheckedUpdateManyWithoutConversationsInput = {
   profilePics?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1910,6 +1983,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   profilePics?: boolean
   role?: boolean
   isOnline?: boolean
+  refreshTokens?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   friends?: boolean | Prisma.User$friendsArgs<ExtArgs>
@@ -1935,6 +2009,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePics?: boolean
   role?: boolean
   isOnline?: boolean
+  refreshTokens?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1950,6 +2025,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePics?: boolean
   role?: boolean
   isOnline?: boolean
+  refreshTokens?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1965,11 +2041,12 @@ export type UserSelectScalar = {
   profilePics?: boolean
   role?: boolean
   isOnline?: boolean
+  refreshTokens?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "othername" | "email" | "password" | "isAdmin" | "profilePics" | "role" | "isOnline" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "othername" | "email" | "password" | "isAdmin" | "profilePics" | "role" | "isOnline" | "refreshTokens" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   friends?: boolean | Prisma.User$friendsArgs<ExtArgs>
   friendOf?: boolean | Prisma.User$friendOfArgs<ExtArgs>
@@ -2009,6 +2086,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profilePics: string
     role: $Enums.Role
     isOnline: boolean
+    refreshTokens: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2453,6 +2531,7 @@ export interface UserFieldRefs {
   readonly profilePics: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly isOnline: Prisma.FieldRef<"User", 'Boolean'>
+  readonly refreshTokens: Prisma.FieldRef<"User", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

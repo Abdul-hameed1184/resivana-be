@@ -1053,6 +1053,7 @@ export const UserScalarFieldEnum = {
   profilePics: 'profilePics',
   role: 'role',
   isOnline: 'isOnline',
+  refreshTokens: 'refreshTokens',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -49,16 +49,18 @@ enum MessageType {
 }
 
 model User {
-  id          String  @id @default(uuid())
-  firstName   String
-  lastName    String
-  othername   String?
-  email       String  @unique
-  password    String
-  isAdmin     Boolean @default(false)
-  profilePics String  @default("https://res.cloudinary.com/djoahpirg/image/upload/v1745277187/wepadt9fizw8vlmnqiyz.jpg")
-  role        Role    @default(USER)
-  isOnline    Boolean @default(false)
+  id            String   @id @default(uuid())
+  firstName     String
+  lastName      String
+  username     String
+  email         String   @unique
+  password      String
+  isAdmin       Boolean  @default(false)
+  profilePics   String   @default("https://res.cloudinary.com/djoahpirg/image/upload/v1745277187/wepadt9fizw8vlmnqiyz.jpg")
+  role          Role     @default(USER)
+  isOnline      Boolean  @default(false)
+  // Relation to tokens
+  refreshTokens String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
