@@ -3,6 +3,17 @@ import { Router } from "express";
 
 const router = Router();
 
-// router.get("/", getProperties);
+/**
+ * @swagger
+ * /api/v1/properties:
+ *   get:
+ *     summary: Get all properties
+ *     responses:
+ *       200:
+ *         description: List of properties
+ */
+router.get("/", (req, res) => {
+  res.send("List of properties will be here");
+});
 
 export default router;

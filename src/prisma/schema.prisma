@@ -48,17 +48,25 @@ enum MessageType {
   MESSAGE
 }
 
+enum OtpType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
 model User {
-  id          String  @id @default(uuid())
-  firstName   String
-  lastName    String
-  othername   String?
-  email       String  @unique
-  password    String
-  isAdmin     Boolean @default(false)
-  profilePics String  @default("https://res.cloudinary.com/djoahpirg/image/upload/v1745277187/wepadt9fizw8vlmnqiyz.jpg")
-  role        Role    @default(USER)
-  isOnline    Boolean @default(false)
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  userName        String   @default("")
+  email           String   @unique
+  password        String
+  isAdmin         Boolean  @default(false)
+  profilePicture  String   @default("https://res.cloudinary.com/djoahpirg/image/upload/v1745277187/wepadt9fizw8vlmnqiyz.jpg")
+  role            Role     @default(USER)
+  isOnline        Boolean  @default(false)
+  isEmailVerified Boolean  @default(false)
+  // Relation to tokens
+  refreshTokens   RefreshToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,9 +83,35 @@ model User {
   conversations    Conversation[] @relation("ConversationParticipants")
   messages         Message[]      @relation("UserMessages")
   reviews          Review[]
+  otps             OTP[]
 
   @@index([email])
   @@index([role])
+}
+
+model OTP {
+  id        String   @id @default(uuid())
+  code      String // hashed
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  otpType   OtpType
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique // Store a hash of the token for better security
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Property {

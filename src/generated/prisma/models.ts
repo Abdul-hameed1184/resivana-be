@@ -9,6 +9,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/OTP'
+export type * from './models/RefreshToken'
 export type * from './models/Property'
 export type * from './models/Location'
 export type * from './models/Agent'
