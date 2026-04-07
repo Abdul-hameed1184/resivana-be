@@ -28,13 +28,14 @@ export type UserMinAggregateOutputType = {
   id: string | null
   firstName: string | null
   lastName: string | null
-  othername: string | null
+  userName: string | null
   email: string | null
   password: string | null
   isAdmin: boolean | null
-  profilePics: string | null
+  profilePicture: string | null
   role: $Enums.Role | null
   isOnline: boolean | null
+  isEmailVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -43,13 +44,14 @@ export type UserMaxAggregateOutputType = {
   id: string | null
   firstName: string | null
   lastName: string | null
-  othername: string | null
+  userName: string | null
   email: string | null
   password: string | null
   isAdmin: boolean | null
-  profilePics: string | null
+  profilePicture: string | null
   role: $Enums.Role | null
   isOnline: boolean | null
+  isEmailVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,14 +60,14 @@ export type UserCountAggregateOutputType = {
   id: number
   firstName: number
   lastName: number
-  othername: number
+  userName: number
   email: number
   password: number
   isAdmin: number
-  profilePics: number
+  profilePicture: number
   role: number
   isOnline: number
-  refreshTokens: number
+  isEmailVerified: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -76,13 +78,14 @@ export type UserMinAggregateInputType = {
   id?: true
   firstName?: true
   lastName?: true
-  othername?: true
+  userName?: true
   email?: true
   password?: true
   isAdmin?: true
-  profilePics?: true
+  profilePicture?: true
   role?: true
   isOnline?: true
+  isEmailVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -91,13 +94,14 @@ export type UserMaxAggregateInputType = {
   id?: true
   firstName?: true
   lastName?: true
-  othername?: true
+  userName?: true
   email?: true
   password?: true
   isAdmin?: true
-  profilePics?: true
+  profilePicture?: true
   role?: true
   isOnline?: true
+  isEmailVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,14 +110,14 @@ export type UserCountAggregateInputType = {
   id?: true
   firstName?: true
   lastName?: true
-  othername?: true
+  userName?: true
   email?: true
   password?: true
   isAdmin?: true
-  profilePics?: true
+  profilePicture?: true
   role?: true
   isOnline?: true
-  refreshTokens?: true
+  isEmailVerified?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -195,14 +199,14 @@ export type UserGroupByOutputType = {
   id: string
   firstName: string
   lastName: string
-  othername: string | null
+  userName: string
   email: string
   password: string
   isAdmin: boolean
-  profilePics: string
+  profilePicture: string
   role: $Enums.Role
   isOnline: boolean
-  refreshTokens: string[]
+  isEmailVerified: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -232,16 +236,17 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
-  othername?: Prisma.StringNullableFilter<"User"> | string | null
+  userName?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
-  profilePics?: Prisma.StringFilter<"User"> | string
+  profilePicture?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
-  refreshTokens?: Prisma.StringNullableListFilter<"User">
+  isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
   friends?: Prisma.UserListRelationFilter
   friendOf?: Prisma.UserListRelationFilter
   agent?: Prisma.XOR<Prisma.AgentNullableScalarRelationFilter, Prisma.AgentWhereInput> | null
@@ -251,22 +256,24 @@ export type UserWhereInput = {
   conversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  otps?: Prisma.OTPListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
-  othername?: Prisma.SortOrderInput | Prisma.SortOrder
+  userName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
-  profilePics?: Prisma.SortOrder
+  profilePicture?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
-  refreshTokens?: Prisma.SortOrder
+  isEmailVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   friends?: Prisma.UserOrderByRelationAggregateInput
   friendOf?: Prisma.UserOrderByRelationAggregateInput
   agent?: Prisma.AgentOrderByWithRelationInput
@@ -276,6 +283,7 @@ export type UserOrderByWithRelationInput = {
   conversations?: Prisma.ConversationOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  otps?: Prisma.OTPOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -286,15 +294,16 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
-  othername?: Prisma.StringNullableFilter<"User"> | string | null
+  userName?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
-  profilePics?: Prisma.StringFilter<"User"> | string
+  profilePicture?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
-  refreshTokens?: Prisma.StringNullableListFilter<"User">
+  isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
   friends?: Prisma.UserListRelationFilter
   friendOf?: Prisma.UserListRelationFilter
   agent?: Prisma.XOR<Prisma.AgentNullableScalarRelationFilter, Prisma.AgentWhereInput> | null
@@ -304,20 +313,21 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   conversations?: Prisma.ConversationListRelationFilter
   messages?: Prisma.MessageListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  otps?: Prisma.OTPListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
-  othername?: Prisma.SortOrderInput | Prisma.SortOrder
+  userName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
-  profilePics?: Prisma.SortOrder
+  profilePicture?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
-  refreshTokens?: Prisma.SortOrder
+  isEmailVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -332,14 +342,14 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
   lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
-  othername?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  userName?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  profilePics?: Prisma.StringWithAggregatesFilter<"User"> | string
+  profilePicture?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  refreshTokens?: Prisma.StringNullableListFilter<"User">
+  isEmailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -348,16 +358,17 @@ export type UserCreateInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -367,22 +378,24 @@ export type UserCreateInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -392,22 +405,24 @@ export type UserUncheckedCreateInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -417,22 +432,24 @@ export type UserUpdateInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -442,20 +459,21 @@ export type UserUncheckedUpdateInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -464,14 +482,14 @@ export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -480,24 +498,16 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
 }
 
 export type UserListRelationFilter = {
@@ -514,14 +524,14 @@ export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
-  othername?: Prisma.SortOrder
+  userName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
-  profilePics?: Prisma.SortOrder
+  profilePicture?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
-  refreshTokens?: Prisma.SortOrder
+  isEmailVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -530,13 +540,14 @@ export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
-  othername?: Prisma.SortOrder
+  userName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
-  profilePics?: Prisma.SortOrder
+  profilePicture?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
+  isEmailVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -545,13 +556,14 @@ export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
-  othername?: Prisma.SortOrder
+  userName?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
-  profilePics?: Prisma.SortOrder
+  profilePicture?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isOnline?: Prisma.SortOrder
+  isEmailVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -559,10 +571,6 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
-}
-
-export type UserCreaterefreshTokensInput = {
-  set: string[]
 }
 
 export type UserCreateNestedManyWithoutFriendOfInput = {
@@ -593,21 +601,12 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
-}
-
-export type UserUpdaterefreshTokensInput = {
-  set?: string[]
-  push?: string | string[]
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -664,6 +663,34 @@ export type UserUncheckedUpdateManyWithoutFriendsNestedInput = {
   update?: Prisma.UserUpdateWithWhereUniqueWithoutFriendsInput | Prisma.UserUpdateWithWhereUniqueWithoutFriendsInput[]
   updateMany?: Prisma.UserUpdateManyWithWhereWithoutFriendsInput | Prisma.UserUpdateManyWithWhereWithoutFriendsInput[]
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutOtpsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOtpsInput, Prisma.UserUncheckedCreateWithoutOtpsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOtpsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOtpsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOtpsInput, Prisma.UserUncheckedCreateWithoutOtpsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOtpsInput
+  upsert?: Prisma.UserUpsertWithoutOtpsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOtpsInput, Prisma.UserUpdateWithoutOtpsInput>, Prisma.UserUncheckedUpdateWithoutOtpsInput>
+}
+
+export type UserCreateNestedOneWithoutRefreshTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
 }
 
 export type UserCreateNestedOneWithoutPropertiesInput = {
@@ -792,16 +819,17 @@ export type UserCreateWithoutFriendOfInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgentInput
@@ -810,22 +838,24 @@ export type UserCreateWithoutFriendOfInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendOfInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgentInput
@@ -834,6 +864,7 @@ export type UserUncheckedCreateWithoutFriendOfInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendOfInput = {
@@ -845,16 +876,17 @@ export type UserCreateWithoutFriendsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgentInput
@@ -863,22 +895,24 @@ export type UserCreateWithoutFriendsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgentInput
@@ -887,6 +921,7 @@ export type UserUncheckedCreateWithoutFriendsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendsInput = {
@@ -917,14 +952,14 @@ export type UserScalarWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
-  othername?: Prisma.StringNullableFilter<"User"> | string | null
+  userName?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
-  profilePics?: Prisma.StringFilter<"User"> | string
+  profilePicture?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isOnline?: Prisma.BoolFilter<"User"> | boolean
-  refreshTokens?: Prisma.StringNullableListFilter<"User">
+  isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -945,20 +980,261 @@ export type UserUpdateManyWithWhereWithoutFriendsInput = {
   data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutFriendsInput>
 }
 
+export type UserCreateWithoutOtpsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  userName?: string
+  email: string
+  password: string
+  isAdmin?: boolean
+  profilePicture?: string
+  role?: $Enums.Role
+  isOnline?: boolean
+  isEmailVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
+  friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
+  agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgentInput
+  agentBookings?: Prisma.BookingCreateNestedManyWithoutAgentInput
+  customerBookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOtpsInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  userName?: string
+  email: string
+  password: string
+  isAdmin?: boolean
+  profilePicture?: string
+  role?: $Enums.Role
+  isOnline?: boolean
+  isEmailVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
+  friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
+  agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgentInput
+  agentBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAgentInput
+  customerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOtpsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOtpsInput, Prisma.UserUncheckedCreateWithoutOtpsInput>
+}
+
+export type UserUpsertWithoutOtpsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOtpsInput, Prisma.UserUncheckedUpdateWithoutOtpsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOtpsInput, Prisma.UserUncheckedCreateWithoutOtpsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOtpsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOtpsInput, Prisma.UserUncheckedUpdateWithoutOtpsInput>
+}
+
+export type UserUpdateWithoutOtpsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
+  friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
+  agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgentNestedInput
+  agentBookings?: Prisma.BookingUpdateManyWithoutAgentNestedInput
+  customerBookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOtpsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
+  friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
+  agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgentNestedInput
+  agentBookings?: Prisma.BookingUncheckedUpdateManyWithoutAgentNestedInput
+  customerBookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRefreshTokensInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  userName?: string
+  email: string
+  password: string
+  isAdmin?: boolean
+  profilePicture?: string
+  role?: $Enums.Role
+  isOnline?: boolean
+  isEmailVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
+  friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
+  agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutAgentInput
+  agentBookings?: Prisma.BookingCreateNestedManyWithoutAgentInput
+  customerBookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRefreshTokensInput = {
+  id?: string
+  firstName: string
+  lastName: string
+  userName?: string
+  email: string
+  password: string
+  isAdmin?: boolean
+  profilePicture?: string
+  role?: $Enums.Role
+  isOnline?: boolean
+  isEmailVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
+  friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
+  agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgentInput
+  agentBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAgentInput
+  customerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRefreshTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+}
+
+export type UserUpsertWithoutRefreshTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+}
+
+export type UserUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
+  friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
+  agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutAgentNestedInput
+  agentBookings?: Prisma.BookingUpdateManyWithoutAgentNestedInput
+  customerBookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
+  friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
+  agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgentNestedInput
+  agentBookings?: Prisma.BookingUncheckedUpdateManyWithoutAgentNestedInput
+  customerBookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutPropertiesInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -967,22 +1243,24 @@ export type UserCreateWithoutPropertiesInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -991,6 +1269,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -1013,16 +1292,17 @@ export type UserUpdateWithoutPropertiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1031,22 +1311,24 @@ export type UserUpdateWithoutPropertiesInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1055,22 +1337,24 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAgentInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   properties?: Prisma.PropertyCreateNestedManyWithoutAgentInput
@@ -1079,22 +1363,24 @@ export type UserCreateWithoutAgentInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAgentInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutAgentInput
@@ -1103,6 +1389,7 @@ export type UserUncheckedCreateWithoutAgentInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAgentInput = {
@@ -1125,16 +1412,17 @@ export type UserUpdateWithoutAgentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgentNestedInput
@@ -1143,22 +1431,24 @@ export type UserUpdateWithoutAgentInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgentNestedInput
@@ -1167,22 +1457,24 @@ export type UserUncheckedUpdateWithoutAgentInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAgentBookingsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -1191,22 +1483,24 @@ export type UserCreateWithoutAgentBookingsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAgentBookingsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -1215,6 +1509,7 @@ export type UserUncheckedCreateWithoutAgentBookingsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAgentBookingsInput = {
@@ -1226,16 +1521,17 @@ export type UserCreateWithoutCustomerBookingsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -1244,22 +1540,24 @@ export type UserCreateWithoutCustomerBookingsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCustomerBookingsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -1268,6 +1566,7 @@ export type UserUncheckedCreateWithoutCustomerBookingsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCustomerBookingsInput = {
@@ -1290,16 +1589,17 @@ export type UserUpdateWithoutAgentBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1308,22 +1608,24 @@ export type UserUpdateWithoutAgentBookingsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1332,6 +1634,7 @@ export type UserUncheckedUpdateWithoutAgentBookingsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCustomerBookingsInput = {
@@ -1349,16 +1652,17 @@ export type UserUpdateWithoutCustomerBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1367,22 +1671,24 @@ export type UserUpdateWithoutCustomerBookingsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomerBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1391,22 +1697,24 @@ export type UserUncheckedUpdateWithoutCustomerBookingsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -1415,22 +1723,24 @@ export type UserCreateWithoutConversationsInput = {
   customerBookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -1439,6 +1749,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   customerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -1466,16 +1777,17 @@ export type UserCreateWithoutMessagesInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -1484,22 +1796,24 @@ export type UserCreateWithoutMessagesInput = {
   customerBookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -1508,6 +1822,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   customerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -1530,16 +1845,17 @@ export type UserUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1548,22 +1864,24 @@ export type UserUpdateWithoutMessagesInput = {
   customerBookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1572,22 +1890,24 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   customerBookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   friends?: Prisma.UserCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
@@ -1596,22 +1916,24 @@ export type UserCreateWithoutReviewsInput = {
   customerBookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  otps?: Prisma.OTPCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
   id?: string
   firstName: string
   lastName: string
-  othername?: string | null
+  userName?: string
   email: string
   password: string
   isAdmin?: boolean
-  profilePics?: string
+  profilePicture?: string
   role?: $Enums.Role
   isOnline?: boolean
-  refreshTokens?: Prisma.UserCreaterefreshTokensInput | string[]
+  isEmailVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   friends?: Prisma.UserUncheckedCreateNestedManyWithoutFriendOfInput
   friendOf?: Prisma.UserUncheckedCreateNestedManyWithoutFriendsInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
@@ -1620,6 +1942,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   customerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutParticipantsInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  otps?: Prisma.OTPUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1642,16 +1965,17 @@ export type UserUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1660,22 +1984,24 @@ export type UserUpdateWithoutReviewsInput = {
   customerBookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1684,22 +2010,24 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   customerBookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpdateWithoutFriendOfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgentNestedInput
@@ -1708,22 +2036,24 @@ export type UserUpdateWithoutFriendOfInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendOfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgentNestedInput
@@ -1732,20 +2062,21 @@ export type UserUncheckedUpdateWithoutFriendOfInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutFriendOfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1754,16 +2085,17 @@ export type UserUpdateWithoutFriendsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutAgentNestedInput
@@ -1772,22 +2104,24 @@ export type UserUpdateWithoutFriendsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutAgentNestedInput
@@ -1796,20 +2130,21 @@ export type UserUncheckedUpdateWithoutFriendsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutParticipantsNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutFriendsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1818,16 +2153,17 @@ export type UserUpdateWithoutConversationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
@@ -1836,22 +2172,24 @@ export type UserUpdateWithoutConversationsInput = {
   customerBookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
   messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   friends?: Prisma.UserUncheckedUpdateManyWithoutFriendOfNestedInput
   friendOf?: Prisma.UserUncheckedUpdateManyWithoutFriendsNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
@@ -1860,20 +2198,21 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   customerBookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  otps?: Prisma.OTPUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutConversationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
-  othername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profilePics?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePicture?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  refreshTokens?: Prisma.UserUpdaterefreshTokensInput | string[]
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1884,6 +2223,7 @@ export type UserUncheckedUpdateManyWithoutConversationsInput = {
  */
 
 export type UserCountOutputType = {
+  refreshTokens: number
   friends: number
   friendOf: number
   properties: number
@@ -1892,9 +2232,11 @@ export type UserCountOutputType = {
   conversations: number
   messages: number
   reviews: number
+  otps: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   friends?: boolean | UserCountOutputTypeCountFriendsArgs
   friendOf?: boolean | UserCountOutputTypeCountFriendOfArgs
   properties?: boolean | UserCountOutputTypeCountPropertiesArgs
@@ -1903,6 +2245,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   conversations?: boolean | UserCountOutputTypeCountConversationsArgs
   messages?: boolean | UserCountOutputTypeCountMessagesArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
+  otps?: boolean | UserCountOutputTypeCountOtpsArgs
 }
 
 /**
@@ -1913,6 +2256,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefreshTokenWhereInput
 }
 
 /**
@@ -1971,21 +2321,29 @@ export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.ReviewWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOtpsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OTPWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   firstName?: boolean
   lastName?: boolean
-  othername?: boolean
+  userName?: boolean
   email?: boolean
   password?: boolean
   isAdmin?: boolean
-  profilePics?: boolean
+  profilePicture?: boolean
   role?: boolean
   isOnline?: boolean
-  refreshTokens?: boolean
+  isEmailVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   friends?: boolean | Prisma.User$friendsArgs<ExtArgs>
   friendOf?: boolean | Prisma.User$friendOfArgs<ExtArgs>
   agent?: boolean | Prisma.User$agentArgs<ExtArgs>
@@ -1995,6 +2353,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  otps?: boolean | Prisma.User$otpsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2002,14 +2361,14 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   firstName?: boolean
   lastName?: boolean
-  othername?: boolean
+  userName?: boolean
   email?: boolean
   password?: boolean
   isAdmin?: boolean
-  profilePics?: boolean
+  profilePicture?: boolean
   role?: boolean
   isOnline?: boolean
-  refreshTokens?: boolean
+  isEmailVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2018,14 +2377,14 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   firstName?: boolean
   lastName?: boolean
-  othername?: boolean
+  userName?: boolean
   email?: boolean
   password?: boolean
   isAdmin?: boolean
-  profilePics?: boolean
+  profilePicture?: boolean
   role?: boolean
   isOnline?: boolean
-  refreshTokens?: boolean
+  isEmailVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2034,20 +2393,21 @@ export type UserSelectScalar = {
   id?: boolean
   firstName?: boolean
   lastName?: boolean
-  othername?: boolean
+  userName?: boolean
   email?: boolean
   password?: boolean
   isAdmin?: boolean
-  profilePics?: boolean
+  profilePicture?: boolean
   role?: boolean
   isOnline?: boolean
-  refreshTokens?: boolean
+  isEmailVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "othername" | "email" | "password" | "isAdmin" | "profilePics" | "role" | "isOnline" | "refreshTokens" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "userName" | "email" | "password" | "isAdmin" | "profilePicture" | "role" | "isOnline" | "isEmailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   friends?: boolean | Prisma.User$friendsArgs<ExtArgs>
   friendOf?: boolean | Prisma.User$friendOfArgs<ExtArgs>
   agent?: boolean | Prisma.User$agentArgs<ExtArgs>
@@ -2057,6 +2417,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  otps?: boolean | Prisma.User$otpsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2065,6 +2426,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     friends: Prisma.$UserPayload<ExtArgs>[]
     friendOf: Prisma.$UserPayload<ExtArgs>[]
     agent: Prisma.$AgentPayload<ExtArgs> | null
@@ -2074,19 +2436,20 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     conversations: Prisma.$ConversationPayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    otps: Prisma.$OTPPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
     lastName: string
-    othername: string | null
+    userName: string
     email: string
     password: string
     isAdmin: boolean
-    profilePics: string
+    profilePicture: string
     role: $Enums.Role
     isOnline: boolean
-    refreshTokens: string[]
+    isEmailVerified: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2483,6 +2846,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   friends<T extends Prisma.User$friendsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$friendsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   friendOf<T extends Prisma.User$friendOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$friendOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agent<T extends Prisma.User$agentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentArgs<ExtArgs>>): Prisma.Prisma__AgentClient<runtime.Types.Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2492,6 +2856,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   conversations<T extends Prisma.User$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  otps<T extends Prisma.User$otpsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$otpsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OTPPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2524,14 +2889,14 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly firstName: Prisma.FieldRef<"User", 'String'>
   readonly lastName: Prisma.FieldRef<"User", 'String'>
-  readonly othername: Prisma.FieldRef<"User", 'String'>
+  readonly userName: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
-  readonly profilePics: Prisma.FieldRef<"User", 'String'>
+  readonly profilePicture: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly isOnline: Prisma.FieldRef<"User", 'Boolean'>
-  readonly refreshTokens: Prisma.FieldRef<"User", 'String[]'>
+  readonly isEmailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -2927,6 +3292,30 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.refreshTokens
+ */
+export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefreshToken
+   */
+  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefreshToken
+   */
+  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
+  where?: Prisma.RefreshTokenWhereInput
+  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
+  cursor?: Prisma.RefreshTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
+}
+
+/**
  * User.friends
  */
 export type User$friendsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3135,6 +3524,30 @@ export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * User.otps
+ */
+export type User$otpsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OTP
+   */
+  select?: Prisma.OTPSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OTP
+   */
+  omit?: Prisma.OTPOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OTPInclude<ExtArgs> | null
+  where?: Prisma.OTPWhereInput
+  orderBy?: Prisma.OTPOrderByWithRelationInput | Prisma.OTPOrderByWithRelationInput[]
+  cursor?: Prisma.OTPWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OTPScalarFieldEnum | Prisma.OTPScalarFieldEnum[]
 }
 
 /**

@@ -15,6 +15,26 @@ const options: swaggerJsdoc.Options = {
         description: "Development server",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+        csrfToken: {
+          type: "apiKey",
+          in: "header",
+          name: "X-CSRF-Token",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+        csrfToken: [],
+      },
+    ],
   },
   apis: ["./src/api/v1/routes/*.ts", "./dist/api/v1/routes/*.js"], // where your API comments live
 };

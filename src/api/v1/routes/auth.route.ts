@@ -1,21 +1,42 @@
 import { Router } from "express";
+import { 
+    login, 
+    signup, 
+    logout, 
+    handleRefreshToken, 
+    forgotPassword, 
+    resetPassword, 
+    verifyEmail, 
+    changePassword, 
+    updateUserProfilePicture,
+    resendEmailVerificationOtp,
+    verifyForgotPasswordOtp,
+    checkAuth,
+    getCsrfToken
+} from "../controllers/auth.controller";
+import { protect } from "../middleware/auth.middleware";
+import { upload } from "../../../middleware/upload";
 
 const router = Router();
 
-/* 
-TODO: 
-- Implement login
-- Implement signup
-- Implement logout
-- Implement refresh
-- Implement forgot password
-- Implement reset password
-- Implement verify email
-- Implement change password
-- Implement change profile picture
-- Implement delete profile
+/**
+ * @swagger
+ * /api/v1/auth/csrf-token:
+ *   get:
+ *     summary: Get CSRF token
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: CSRF token generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 csrfToken: { type: string }
  */
-
+router.get("/csrf-token", getCsrfToken);
 
 /**
  * @swagger
@@ -40,9 +61,7 @@ TODO:
  *       200:
  *         description: Login successful
  */
-router.post("/login", (req, res) => {
-    res.send("Login");
-});
+router.post("/login", login);
 
 /**
  * @swagger
@@ -58,50 +77,272 @@ router.post("/login", (req, res) => {
  *           schema:
  *             type: object
  *             properties:
+ *               firstName: { type: string }
+ *               lastName: { type: string }
+ *               userName: { type: string }
  *               email: { type: string }
  *               password: { type: string }
- *               name: { type: string }
- *               phone: { type: string }
- *               address: { type: string }
- *               city: { type: string }
- *               state: { type: string }
- *               zip: { type: string }
- *               country: { type: string }
- *               profilePicture: { type: string }
+ *             required:
+ *               - firstName
+ *               - lastName
+ *               - email
+ *               - password
+ *     responses:
+ *       201:
+ *         description: Signup successful
+ *       400:
+ *         description: Bad request
+ *       409:
+ *         description: User already exists
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/signup", signup);
+
+/**
+ * @swagger
+ * /api/v1/auth/verify-email:
+ *   post:
+ *     summary: Verify email
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *               otp: { type: string }
+ *             required:
+ *               - email
+ *               - otp
+ *     responses:
+ *       200:
+ *         description: Email verified successfully
+ *       400:
+ *         description: Invalid or expired otp
+ *       404:
+ *         description: User not found
+ */
+router.post("/verify-email", verifyEmail);
+
+/**
+ * @swagger
+ * /api/v1/auth/resend-verify-email:
+ *   post:
+ *     summary: Resend email verification OTP
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *             required:
+ *               - email
+ *     responses:
+ *       200:
+ *         description: OTP resent successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/resend-verify-email", resendEmailVerificationOtp);
+
+/** 
+ * @swagger
+ * /api/v1/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/logout", logout);
+
+/**
+ * @swagger
+ * /api/v1/auth/refresh:
+ *   get:
+ *     summary: Refresh access token
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Refresh token generated successfully
+ *       403:
+ *         description: Forbidden (invalid or reused refresh token)
+ */
+router.get("/refresh", handleRefreshToken);
+
+/**
+ * @swagger
+ * /api/v1/auth/forgot-password:
+ *   post:
+ *     summary: Request password reset OTP
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *             required:
+ *               - email
+ *     responses:
+ *       200:
+ *         description: OTP sent successfully
+ *       404:
+ *         description: User not found
+ */
+router.post("/forgot-password", forgotPassword);
+
+/**
+ * @swagger
+ * /api/v1/auth/verify-forgot-password:
+ *   post:
+ *     summary: Verify password reset OTP
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *               otp: { type: string }
+ *             required:
+ *               - email
+ *               - otp
+ *     responses:
+ *       200:
+ *         description: Otp verified successfully
+ *       400:
+ *         description: Invalid or expired OTP
+ */
+router.post("/verify-forgot-password", verifyForgotPasswordOtp);
+
+/**
+ * @swagger
+ * /api/v1/auth/reset-password:
+ *   post:
+ *     summary: Reset password
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *               password: { type: string }
  *             required:
  *               - email
  *               - password
- *               - name
- *               - phone
- *               - address
- *               - city
- *               - state
- *               - zip
- *               - country
- *               - profilePicture
  *     responses:
  *       200:
- *         description: Signup successful
+ *         description: Password reset successful
+ *       404:
+ *         description: User not found
  */
-router.post("/signup", (req, res) => {
-    res.send("Signup");
-});
+router.post("/reset-password", resetPassword);
 
-router.post("/logout", (req, res) => {
-    res.send("Logout");
-});
+/**
+ * @swagger
+ * /api/v1/auth/change-password:
+ *   patch:
+ *     summary: Change user password
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email: { type: string }
+ *               oldPassword: { type: string }
+ *               newPassword: { type: string }
+ *             required:
+ *               - email
+ *               - oldPassword
+ *               - newPassword
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *       400:
+ *         description: Invalid old password
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch("/change-password", protect, changePassword);
 
-router.post("/refresh", (req, res) => {
-    res.send("Refresh");
-});
+/**
+ * @swagger
+ * /api/v1/auth/profile-picture:
+ *   patch:
+ *     summary: Update user profile picture
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profilePicture:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Profile picture updated successfully
+ *       400:
+ *         description: No file uploaded
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch("/profile-picture", protect, upload.single("profilePicture"), updateUserProfilePicture);
 
-router.post("/forgot-password", (req, res) => {
-    res.send("Forgot Password");
-});
-
-router.post("/reset-password", (req, res) => {
-    res.send("Reset Password");
-});
-
+/**
+ * @swagger
+ * /api/v1/auth/check-auth:
+ *   get:
+ *     summary: Check authentication status
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User authenticated successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/check-auth", protect, checkAuth);
 
 export default router;
