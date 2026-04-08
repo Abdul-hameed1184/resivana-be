@@ -65,6 +65,10 @@ model User {
   role            Role     @default(USER)
   isOnline        Boolean  @default(false)
   isEmailVerified Boolean  @default(false)
+
+  provider      String?   // "google" | "apple"
+  providerId    String?   // OAuth user ID
+  
   // Relation to tokens
   refreshTokens   RefreshToken[]
 
