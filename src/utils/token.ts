@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt = require("jsonwebtoken");
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "access-secret";
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "refresh-secret";
