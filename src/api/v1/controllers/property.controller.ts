@@ -45,7 +45,11 @@ export class PropertyController {
   static async createProperty(req: Request, res: Response) {
     try {
       // req.body is already validated by middleware
-      const property = await PropertyService.createProperty(req.body);
+      const propertyData = {
+        ...req.body,
+        agentId: req.user?.id,
+      };
+      const property = await PropertyService.createProperty(propertyData);
       res.status(201).json(property);
     } catch (error: any) {
       res

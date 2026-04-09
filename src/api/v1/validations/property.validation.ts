@@ -19,7 +19,7 @@ export const createPropertySchema = z.object({
     bedrooms: z.number().int().nonnegative().optional().default(0),
     bathrooms: z.number().int().nonnegative().optional().default(0),
     featured: z.boolean().optional().default(false),
-    agentId: z.string().uuid("Invalid agent ID format"),
+    agentId: z.string().uuid("Invalid agent ID format").optional(),
     location: z.object({
       address: z.string().min(5, "Address too short"),
       city: z.string().min(2, "City too short"),

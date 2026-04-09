@@ -1,3 +1,4 @@
+@csrfToken = naR9gc8Z-Z3exoJxWLJvQ2k-AkDLr5hGdRkM
 ### Get CSRF Token
 GET http://localhost:3000/api/v1/auth/csrf-token
 
@@ -21,7 +22,7 @@ X-CSRF-Token: {{csrfToken}}
 
 {
     "email": "abdulluhodulate@gmail.com",
-    "otp": "123456"
+    "otp": "4654"
 }
 
 ### Login
@@ -34,4 +35,61 @@ X-CSRF-Token: {{csrfToken}}
     "password": "password123"
 }
 
-@csrfToken = ZGm9TuuU-T9pQAeBV8W4gfP4D3G0hYxR8U8w
+### Refresh Token
+GET http://localhost:3000/api/v1/auth/refresh
+
+
+### Property Management Variables
+@accessToken =    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFiZHVsbHVob2R1bGF0ZUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsInNlc3Npb25JZCI6ImFjYzU2MTZkLTdiOGMtNDY1Yy1iYTYzLTQxYTIzMTdmODE5NyJ9LCJpYXQiOjE3NzU3NDgwMTcsImV4cCI6MTc3NTc0ODkxN30.8vcykMaILy5Lcbvq5PsvazTh0nkHhMr2ZRoCA4gOT50"
+
+@propertyId = YOUR_PROPERTY_ID_HERE
+
+### Create Property
+POST http://localhost:3000/api/v1/properties
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "title": "Luxury Penthouse in Lagos",
+    "description": "A stunning 4-bedroom penthouse with ocean views and modern amenities.",
+    "price": 500000,
+    "type": "APARTMENT",
+    "status": "AVAILABLE",
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "featured": true,
+    "location": {
+        "address": "123 Ocean View Drive",
+        "city": "Lagos",
+        "state": "Lagos",
+        "country": "Nigeria",
+        "latitude": 6.4527,
+        "longitude": 3.3892
+    }
+}
+
+### Get All Properties
+GET http://localhost:3000/api/v1/properties
+Authorization: Bearer {{accessToken}}
+
+### Get Property by ID
+GET http://localhost:3000/api/v1/properties/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+
+### Update Property
+PUT http://localhost:3000/api/v1/properties/{{propertyId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "price": 550000,
+    "status": "PENDING"
+}
+
+### Delete Property
+DELETE http://localhost:3000/api/v1/properties/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+

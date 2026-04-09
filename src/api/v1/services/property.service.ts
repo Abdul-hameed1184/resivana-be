@@ -56,7 +56,7 @@ export class PropertyService {
             firstName: true,
             lastName: true,
             email: true,
-            profilePics: true,
+            profilePicture: true,
           },
         },
       },
@@ -80,7 +80,7 @@ export class PropertyService {
             firstName: true,
             lastName: true,
             email: true,
-            profilePics: true,
+            profilePicture: true,
           },
         },
         reviews: {
@@ -89,7 +89,7 @@ export class PropertyService {
               select: {
                 firstName: true,
                 lastName: true,
-                profilePics: true,
+                profilePicture: true,
               },
             },
           },
