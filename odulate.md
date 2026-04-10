@@ -39,5 +39,24 @@ Introduced a robust validation system using **Zod**.
 - Added **[properties_real.test.ts](src/__tests__/api/properties_real.test.ts)**: Real integration tests using `supertest` to verify API endpoints (requires database setup).
 
 ---
+ 
+ ## 5. Security Architecture & JWT Management
+ 
+- Improved token security by implementing a centralized environment configuration in **[env.config.ts](src/config/env.config.ts)**.
+- Synchronized `ACCESS_TOKEN_SECRET` and `REFRESH_TOKEN_SECRET` across generation and validation layers to prevent unauthorized access errors.
+- Cleaned up `.env` file structure and fallbacks.
+- Updated **[auth.middleware.ts](src/api/v1/middleware/auth.middleware.ts)** and **[token.ts](src/utils/token.ts)** to use the new centralized configuration.
 
-_Created on 2026-04-05_
+## 6. Express 5 Compatibility Fixes
+
+- Resolved a critical `TypeError` in the validation middleware caused by direct assignment to `req.query` and `req.params`.
+- Modified **[validate.middleware.ts](src/api/v1/middlewares/validate.middleware.ts)** to use `Object.assign()` and object mutation, ensuring compatibility with Express 5's read-only getters.
+
+## 7. OpenAPI & Documentation
+
+- Comprehensive **Swagger (OpenAPI)** documentation added to **[property.route.ts](src/api/v1/routes/property.route.ts)**.
+- Documented all endpoints with tags, security requirements (Bearer Auth + CSRF), detailed request bodies, and full response models.
+
+---
+
+_Updated on 2026-04-10_

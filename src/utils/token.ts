@@ -1,7 +1,5 @@
 import jwt = require("jsonwebtoken");
-
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "access-secret";
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "refresh-secret";
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../config/env.config";
 
 export const generateTokens = (email: string, role: string, sessionId: string) => {
     const accessToken = jwt.sign({
