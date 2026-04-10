@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Auth ID Token Generator</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h2>OAuth ID Token Generator</h2>
+    <p>Click a button below to sign in and get an ID token.</p>
+    
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: flex-start;">
+        <!-- Google Sign-In -->
+        <div>
+            <div id="g_id_onload"
+                 data-client_id="837775081408-trc1j935a5fkad8gjqripqrsu56qs3m1.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+        </div>
+
+        <!-- Apple Sign-In -->
+        <div>
+            <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <h3>Your ID Token:</h3>
+        <textarea id="idTokenBox" rows="10" cols="80" readonly style="font-family: monospace; padding: 10px; width: 100%; max-width: 600px;" placeholder="Token will appear here after login..."></textarea>
+        <br>
+        <button onclick="copyToken()" style="margin-top: 10px; padding: 8px 16px; cursor: pointer;">Copy Token</button>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+    <script>
+        // Init Apple Sign In
+        AppleID.auth.init({
+            clientId : 'YOUR_APPLE_CLIENT_ID', // Replace with your Apple Client ID
+            scope : 'name email',
+            redirectURI: window.location.href, // Apple requires a valid redirect URI even with usePopup
+            usePopup: true 
+        });
+
+        // Listen for Apple Sign In response
+        document.addEventListener('AppleIDSignInOnSuccess', (event) => {
+            console.log("Apple token received.");
+            document.getElementById('idTokenBox').value = event.detail.authorization.id_token;
+        });
+
+        document.addEventListener('AppleIDSignInOnFailure', (event) => {
+            console.error("Apple sign in failed:", event.detail);
+        });
+
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token received.");
+            document.getElementById('idTokenBox').value = response.credential;
+        }
+
+        function copyToken() {
+            var tokenBox = document.getElementById("idTokenBox");
+            if (!tokenBox.value) {
+                alert("No token to copy yet!");
+                return;
+            }
+            tokenBox.select();
+            tokenBox.setSelectionRange(0, 99999); /* For mobile devices */
+            navigator.clipboard.writeText(tokenBox.value).then(() => {
+                alert("Token copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
