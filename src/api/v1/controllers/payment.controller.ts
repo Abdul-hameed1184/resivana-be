@@ -17,6 +17,10 @@ const headers = {
 export const initiatePayment = asyncHandler(async (req: Request, res: Response) => {
     const { email, amount, metadata } = req.body;
 
+    if (!email || !amount) {
+        throw new AppError("Email and amount are required", 400, "BAD_REQUEST");
+    }
+
     const response = await axios.post(
         "https://api.paystack.co/transaction/initialize",
         {
@@ -26,6 +30,11 @@ export const initiatePayment = asyncHandler(async (req: Request, res: Response) 
         },
         { headers }
     );
+    sendSuccess(res, {
+        message: "Payment initialized successfully",
+        data: response.data.data,
+        statusCode: 200,
+    });
 
 })
 
@@ -41,15 +50,17 @@ export const verifyPayment = asyncHandler(async (req: Request, res: Response) =>
 
         if (data?.status && data?.data?.status === "success") {
 
-            sendSuccess(res, {
+            return sendSuccess(res, {
                 message: "Payment verified successfully",
                 data: data.data,
                 statusCode: 200,
             });
+        } else {
+            throw new AppError("Payment verification failed", 400, "BAD_REQUEST");
         }
 
-        throw new AppError("Payment verification failed", 400, "BAD_REQUEST");
     } catch (error) {
+        if (error instanceof AppError) throw error;
         throw new AppError("Payment verification failed", 400, "BAD_REQUEST");
     }
 
@@ -59,7 +70,7 @@ export const transferToAgent = asyncHandler(async (req: Request, res: Response) 
     const { amount, account_number, bank_code, email } = req.body;
 
     if (!amount || !account_number || !bank_code || !email) {
-        return res.status(400).json({ success: false, message: "All fields are required" });
+        throw new AppError("All fields are required", 400, "BAD_REQUEST");
     }
 
     const amountInKobo = amount * 100;

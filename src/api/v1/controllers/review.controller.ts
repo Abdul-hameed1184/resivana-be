@@ -8,6 +8,8 @@ export const addReview = asyncHandler(async (req: Request, res: Response) => {
     const { propertyId, rating, comment, } = req.body;
     if (!propertyId || !rating || !comment) throw new AppError("Property ID, rating and comment are required", 400, "BAD_REQUEST");
 
+    if(rating < 1 || rating > 5) throw new AppError("Rating must be between 1 and 5", 400, "BAD_REQUEST");
+
     const userId = req.user?.id;
     if (!userId) {
         throw new AppError("Unauthorized access", 401, "UNAUTHORIZED");

@@ -72,7 +72,11 @@ export const getBookings = asyncHandler(async (req: Request, res: Response) => {
 export const updateBooking = asyncHandler(async (req: Request, res: Response) => {
     
     const bookingId = req.params.bookingId as string;
-    const status = req.params.status as any;
+    const status = req.params.status as string;
+
+    if (!Object.values(BookingStatus).includes(status as BookingStatus)) {
+        throw new AppError(`Invalid status. Must be one of: ${Object.values(BookingStatus).join(', ')}`, 400, "BAD_REQUEST");
+    }
 
     if (!bookingId || !status) throw new AppError("Booking ID and status are required", 400, "BAD_REQUEST");
 
@@ -86,7 +90,7 @@ export const updateBooking = asyncHandler(async (req: Request, res: Response) =>
 
     const updatedBooking = await prisma.booking.update({
         where: { id: bookingId },
-        data: { status },
+        data: { status: status as BookingStatus },
     });
 
     sendSuccess(res, {

@@ -29,22 +29,31 @@ export const addFriend = asyncHandler(async (req: Request, res: Response) => {
     });
     if (existingFriend) throw new AppError("You are already friends", 400, "BAD_REQUEST");
 
-    const friendRequest = await prisma.user.update({
-        where: {
-            id: userId,
-        },
-        data: {
-            friends: {
-                connect: {
-                    id: friendId,
-                },
+    const [updatedUser] = await prisma.$transaction([
+        prisma.user.update({
+            where: { id: userId },
+            data: {
+                friends: { connect: { id: friendId } },
             },
-        },
-    });
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                profilePicture: true,
+            },
+        }),
+        prisma.user.update({
+            where: { id: friendId },
+            data: {
+                friends: { connect: { id: userId } },
+            },
+        })
+    ]);
 
     sendSuccess(res, {
         message: "Friend added successfully",
-        data: friendRequest,
+        data: updatedUser,
         statusCode: 201,
     });
 })
@@ -60,7 +69,17 @@ export const getFriends = asyncHandler(async (req: Request, res: Response) => {
             id: userId,
         },
         select: {
-            friends: true,
+            friends: {
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    userName: true,
+                    email: true,
+                    profilePicture: true,
+                    isOnline: true,
+                }
+            },
         },
     });
 

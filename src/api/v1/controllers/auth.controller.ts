@@ -543,10 +543,16 @@ export const googleAuth = asyncHandler(async (req, res) => {
 
     let user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) {
+    if (user) {
+        if (user.provider && user.provider !== "google") {
+            throw new AppError("Account exists with different provider", 400, "PROVIDER_MISMATCH");
+        }
+    } else {
         const dummyPassword = await bcrypt.hash(crypto.randomUUID(), 10);
-        user = await prisma.user.create({
-            data: {
+        user = await prisma.user.upsert({
+            where: { email },
+            update: {},
+            create: {
                 email,
                 firstName: given_name,
                 lastName: family_name,
@@ -613,6 +619,13 @@ export const appleAuth = asyncHandler(async (req, res) => {
     // ✅ Find or create user
     let user = await prisma.user.findUnique({ where: { email } });
 
+
+    // ⚠️ prevent provider conflict
+    if (user && user.provider && user.provider !== "apple") {
+        throw new AppError("Account exists with different provider", 400, "PROVIDER_MISMATCH");
+    }
+
+
     if (!user) {
         const dummyPassword = await bcrypt.hash(crypto.randomUUID(), 10);
         const namePrefix = email.split('@')[0] || "Apple";
@@ -629,10 +642,6 @@ export const appleAuth = asyncHandler(async (req, res) => {
         });
     }
 
-    // ⚠️ prevent provider conflict
-    if (user.provider && user.provider !== "apple") {
-        throw new AppError("Account exists with different provider", 400);
-    }
 
     const sessionId = crypto.randomUUID();
     const { accessToken, refreshToken } = generateTokens(user.email, user.role, sessionId);
