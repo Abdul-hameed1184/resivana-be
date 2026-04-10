@@ -50,7 +50,7 @@ Introduced a robust validation system using **Zod**.
 ## 6. Express 5 Compatibility Fixes
 
 - Resolved a critical `TypeError` in the validation middleware caused by direct assignment to `req.query` and `req.params`.
-- Modified **[validate.middleware.ts](src/api/v1/middlewares/validate.middleware.ts)** to use `Object.assign()` and object mutation, ensuring compatibility with Express 5's read-only getters.
+- Modified **[validate.middleware.ts](src/api/v1/middlewares/validate.middleware.ts)** to use `Object.defineProperty()`. This effectively overrides Express 5's read-only getters, ensuring that Zod's type coercion (e.g., converting query strings to numbers for Prisma) persists through the request lifecycle.
 
 ## 7. OpenAPI & Documentation
 
