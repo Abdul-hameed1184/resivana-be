@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt = require("bcrypt");
 
 export const generateOtp = async () => {
     // get a 4 digit hashed otp
