@@ -40,19 +40,19 @@ Introduced a robust validation system using **Zod**.
 
 ---
  
- ## 5. Security Architecture & JWT Management
+ ## 5. Security Architecture & JWT Management [2026-04-10 00:46]
  
 - Improved token security by implementing a centralized environment configuration in **[env.config.ts](src/config/env.config.ts)**.
 - Synchronized `ACCESS_TOKEN_SECRET` and `REFRESH_TOKEN_SECRET` across generation and validation layers to prevent unauthorized access errors.
 - Cleaned up `.env` file structure and fallbacks.
 - Updated **[auth.middleware.ts](src/api/v1/middleware/auth.middleware.ts)** and **[token.ts](src/utils/token.ts)** to use the new centralized configuration.
 
-## 6. Express 5 Compatibility Fixes
+## 6. Express 5 Compatibility Fixes [2026-04-10 00:57]
 
 - Resolved a critical `TypeError` in the validation middleware caused by direct assignment to `req.query` and `req.params`.
 - Modified **[validate.middleware.ts](src/api/v1/middlewares/validate.middleware.ts)** to use `Object.defineProperty()`. This effectively overrides Express 5's read-only getters, ensuring that Zod's type coercion (e.g., converting query strings to numbers for Prisma) persists through the request lifecycle.
 
-## 7. OpenAPI & Documentation
+## 7. OpenAPI & Documentation [2026-04-09 15:26]
 
 - Comprehensive **Swagger (OpenAPI)** documentation added to **[property.route.ts](src/api/v1/routes/property.route.ts)**.
 - Documented all endpoints with tags, security requirements (Bearer Auth + CSRF), detailed request bodies, and full response models.
