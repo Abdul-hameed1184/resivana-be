@@ -12,7 +12,9 @@ import {
     resendEmailVerificationOtp,
     verifyForgotPasswordOtp,
     checkAuth,
-    getCsrfToken
+    getCsrfToken,
+    googleAuth,
+    appleAuth
 } from "../controllers/auth.controller";
 import { protect } from "../middleware/auth.middleware";
 import { upload } from "../../../middleware/upload";
@@ -344,5 +346,59 @@ router.patch("/profile-picture", protect, upload.single("profilePicture"), updat
  *         description: Unauthorized
  */
 router.get("/check-auth", protect, checkAuth);
+
+/**
+ * @swagger
+ * /api/v1/auth/google:
+ *   post:
+ *     summary: Google authentication
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idToken: { type: string }
+ *             required:
+ *               - idToken
+ *     responses:
+ *       200:
+ *         description: Google authentication successful
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/google", googleAuth);
+
+/**
+ * @swagger
+ * /api/v1/auth/apple:
+ *   post:
+ *     summary: Apple authentication
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idToken: { type: string }
+ *             required:
+ *               - idToken
+ *     responses:
+ *       200:
+ *         description: Apple authentication successful
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/apple", appleAuth);
 
 export default router;

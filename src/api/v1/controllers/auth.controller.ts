@@ -12,6 +12,11 @@ import { generateOtp } from "../../../utils/otp";
 import { OtpType } from "../../../generated/prisma/enums";
 import { otpTemplate } from "../../../templates/otpTemplate";
 import cloudinary from "../../../config/Cloudinary";
+import { OAuth2Client } from "google-auth-library";
+import appleSignin from "apple-signin-auth";
+
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
@@ -322,14 +327,14 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 export const handleRefreshToken = asyncHandler(async (req: Request, res: Response) => {
     const cookies = req.cookies;
     if (!cookies?.refreshToken) return res.sendStatus(401);
-console.log(req.cookies)
+    console.log(req.cookies)
     const refreshToken = cookies.refreshToken;
     res.clearCookie('refreshToken', {
         httpOnly: true,
         sameSite: 'strict',
         secure: true
     });
-console.log("after: ", req.cookies)
+    console.log("after: ", req.cookies)
     const hashedToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
 
     // 1. Find token in database
@@ -386,12 +391,12 @@ console.log("after: ", req.cookies)
         where: { id: tokenRecord.id },
         data: { expiresAt: new Date() }
     });
-    
+
     await prisma.refreshToken.update({
         where: { id: tokenRecord.id },
         data: { revoked: true }
     });
-    
+
     await prisma.refreshToken.delete({
         where: { id: tokenRecord.id }
     });
@@ -516,4 +521,150 @@ export const checkAuth = asyncHandler(async (req: Request, res: Response) => {
     } catch (error: any) {
         throw new AppError(error.message, 500, "INTERNAL_SERVER_ERROR");
     }
+});
+
+export const googleAuth = asyncHandler(async (req, res) => {
+    const { idToken } = req.body;
+
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload) throw new AppError("Invalid Google token", 401);
+
+    const { email, sub, given_name, family_name } = payload;
+
+    if (!email || !sub || !given_name || !family_name) {
+        throw new AppError("Missing required fields from Google token", 400, "BAD_REQUEST");
+    }
+
+    let user = await prisma.user.findUnique({ where: { email } });
+
+    if (user) {
+        if (user.provider && user.provider !== "google") {
+            throw new AppError("Account exists with different provider", 400, "PROVIDER_MISMATCH");
+        }
+    } else {
+        const dummyPassword = await bcrypt.hash(crypto.randomUUID(), 10);
+        user = await prisma.user.upsert({
+            where: { email },
+            update: {},
+            create: {
+                email,
+                firstName: given_name,
+                lastName: family_name,
+                password: dummyPassword,
+                provider: "google",
+                providerId: sub,
+                isEmailVerified: true,
+            },
+        });
+    }
+
+    const sessionId = crypto.randomUUID();
+    const { accessToken, refreshToken } = generateTokens(user.email, user.role, sessionId);
+    const hashedToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
+
+    // store refresh token (same as your login flow)
+    await prisma.refreshToken.create({
+        data: {
+            id: sessionId,
+            token: hashedToken,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        },
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    sendSuccess(res, {
+        message: "Google login successful",
+        data: { accessToken, user },
+        statusCode: 200,
+    });
+});
+
+export const appleAuth = asyncHandler(async (req, res) => {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+        throw new AppError("Apple token is required", 400, "BAD_REQUEST");
+    }
+
+    // ✅ Verify Apple token
+    const appleUser = await appleSignin.verifyIdToken(idToken, {
+        audience: process.env.APPLE_CLIENT_ID,
+        ignoreExpiration: false,
+    });
+
+    if (!appleUser) {
+        throw new AppError("Invalid Apple token", 401, "UNAUTHORIZED");
+    }
+
+    const { email, sub } = appleUser;
+
+    // ⚠️ email might be missing after first login
+    if (!email) {
+        throw new AppError("Apple did not return email", 400);
+    }
+
+    // ✅ Find or create user
+    let user = await prisma.user.findUnique({ where: { email } });
+
+
+    // ⚠️ prevent provider conflict
+    if (user && user.provider && user.provider !== "apple") {
+        throw new AppError("Account exists with different provider", 400, "PROVIDER_MISMATCH");
+    }
+
+
+    if (!user) {
+        const dummyPassword = await bcrypt.hash(crypto.randomUUID(), 10);
+        const namePrefix = email.split('@')[0] || "Apple";
+        user = await prisma.user.create({
+            data: {
+                email,
+                firstName: namePrefix,
+                lastName: "User",
+                password: dummyPassword,
+                provider: "apple",
+                providerId: sub,
+                isEmailVerified: true,
+            },
+        });
+    }
+
+
+    const sessionId = crypto.randomUUID();
+    const { accessToken, refreshToken } = generateTokens(user.email, user.role, sessionId);
+    const hashedToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
+
+    await prisma.refreshToken.create({
+        data: {
+            id: sessionId,
+            token: hashedToken,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+    });
+
+    sendSuccess(res, {
+        message: "Apple login successful",
+        data: { accessToken, user },
+        statusCode: 200,
+    });
 });
