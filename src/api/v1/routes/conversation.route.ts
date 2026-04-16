@@ -39,7 +39,7 @@ router.get("/", ConversationController.getUserConversations);
  *     tags: [Conversations]
  *     security:
  *       - bearerAuth: []
- *       - csrfToken: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:

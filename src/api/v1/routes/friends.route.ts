@@ -19,6 +19,7 @@ const router = Router();
  *     tags: [Friends]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:

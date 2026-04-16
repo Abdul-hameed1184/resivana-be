@@ -21,7 +21,7 @@ router.use(protect);
  *     tags: [Messages]
  *     security:
  *       - bearerAuth: []
- *       - csrfToken: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -91,7 +91,7 @@ router.get("/conversation/:id", MessageController.getConversationMessages);
  *     tags: [Messages]
  *     security:
  *       - bearerAuth: []
- *       - csrfToken: []
+ *         csrfToken: []
  *     parameters:
  *       - in: path
  *         name: id

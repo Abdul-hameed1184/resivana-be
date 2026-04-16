@@ -93,3 +93,180 @@ DELETE http://localhost:3000/api/v1/properties/{{propertyId}}
 Authorization: Bearer {{accessToken}}
 X-CSRF-Token: {{csrfToken}}
 
+
+### Agent Management Variables
+@agentId = YOUR_AGENT_ID_HERE
+
+### Register Agent from Scratch
+POST http://localhost:3000/api/v1/agents/register
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "firstName": "Agent",
+    "lastName": "User",
+    "email": "agent@example.com",
+    "password": "password123",
+    "phone": "08012345678",
+    "bankCode": "044",
+    "accountNumber": "1234567890",
+    "accountName": "Agent User"
+}
+
+### Upgrade to Agent
+POST http://localhost:3000/api/v1/agents/upgrade
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "fullName": "Abdullah Odulate",
+    "email": "abdulluhodulate@gmail.com",
+  "phone": "08012345678",
+    "bankCode": "0446",
+    "accountNumber": "1234567890",
+    "accountName": "Agent User"
+}
+
+### Get Agent Details
+GET http://localhost:3000/api/v1/agents/{{agentId}}
+
+### Get Agent Properties
+GET http://localhost:3000/api/v1/agents/{{agentId}}/properties
+
+
+### Booking Management Variables
+@bookingId = YOUR_BOOKING_ID_HERE
+
+### Schedule Booking
+POST http://localhost:3000/api/v1/bookings
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "properyId": "{{propertyId}}",
+    "date": "2026-05-20T10:00:00Z"
+}
+
+### Get User Bookings
+GET http://localhost:3000/api/v1/bookings
+Authorization: Bearer {{accessToken}}
+
+### Update Booking Status
+PUT http://localhost:3000/api/v1/bookings/{{bookingId}}/APPROVED
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+### Delete Booking
+DELETE http://localhost:3000/api/v1/bookings/{{bookingId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Conversation Management Variables
+@conversationId = YOUR_CONVERSATION_ID_HERE
+@participantId = YOUR_PARTICIPANT_USER_ID
+
+### Create or Get Conversation
+POST http://localhost:3000/api/v1/conversations
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "participantId": "{{participantId}}",
+    "propertyId": "{{propertyId}}"
+}
+
+### Get All User Conversations
+GET http://localhost:3000/api/v1/conversations
+Authorization: Bearer {{accessToken}}
+
+### Get Conversation by ID
+GET http://localhost:3000/api/v1/conversations/{{conversationId}}
+Authorization: Bearer {{accessToken}}
+
+
+### Message Management Variables
+@messageId = YOUR_MESSAGE_ID_HERE
+
+### Send Message
+POST http://localhost:3000/api/v1/messages
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "conversationId": "{{conversationId}}",
+    "content": "Hello, is this property still available?",
+    "type": "MESSAGE"
+}
+
+### Get Conversation Messages
+GET http://localhost:3000/api/v1/messages/conversation/{{conversationId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete Message
+DELETE http://localhost:3000/api/v1/messages/{{messageId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Review Management Variables
+@reviewId = YOUR_REVIEW_ID_HERE
+
+### Add Review
+POST http://localhost:3000/api/v1/reviews
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "propertyId": "{{propertyId}}",
+    "rating": 5,
+    "comment": "Amazing property and great service!"
+}
+
+### Edit Review
+PUT http://localhost:3000/api/v1/reviews
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "reviewId": "{{reviewId}}",
+    "rating": 4,
+    "comment": "Updated: Good property, but slightly far from the city."
+}
+
+### Get Property Reviews
+GET http://localhost:3000/api/v1/reviews/property/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+
+### Get Agent Reviews
+GET http://localhost:3000/api/v1/reviews/agent/{{agentId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete Review
+DELETE http://localhost:3000/api/v1/reviews/{{reviewId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Friends Management Variables
+@friendUserId = ANOTHER_USER_ID
+
+### Add Friend
+POST http://localhost:3000/api/v1/friends
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "friendId": "{{friendUserId}}"
+}
+
+### Get Friends List
+GET http://localhost:3000/api/v1/friends
+Authorization: Bearer {{accessToken}}
