@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { prisma } from "../../../lib/prisma";
 import jwt from "jsonwebtoken";
 import { AppError } from "../../../utils/AppError";
+import { ACCESS_TOKEN_SECRET } from "../../../config/env.config";
 
 interface AuthPayload {
     UserInfo: {
@@ -37,7 +38,7 @@ export const protect = asyncHandler(
         try {
             decoded = jwt.verify(
                 token,
-                process.env.ACCESS_TOKEN_SECRET as string
+                ACCESS_TOKEN_SECRET
             ) as AuthPayload;
         } catch (err: any) {
             if (err.name === "TokenExpiredError") {
@@ -72,3 +73,20 @@ export const protect = asyncHandler(
         next();
     }
 );
+
+/**
+ * ✅ Middleware to restrict access to certain roles
+ * Must be used AFTER the protect middleware
+ */
+export const restrictTo = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            throw new AppError(
+                "You do not have permission to perform this action",
+                403,
+                "FORBIDDEN"
+            );
+        }
+        next();
+    };
+};

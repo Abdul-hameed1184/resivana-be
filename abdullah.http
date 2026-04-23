@@ -1,0 +1,272 @@
+@csrfToken = naR9gc8Z-Z3exoJxWLJvQ2k-AkDLr5hGdRkM
+### Get CSRF Token
+GET http://localhost:3000/api/v1/auth/csrf-token
+
+### Signup
+POST http://localhost:3000/api/v1/auth/signup
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "firstName": "Abdullah",
+    "lastName": "Odulate",
+    "userName": "abdullahodulate",
+    "email": "abdulluhodulate@gmail.com",
+    "password": "password123"
+}
+
+### Verify Email
+POST http://localhost:3000/api/v1/auth/verify-email
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "email": "abdulluhodulate@gmail.com",
+    "otp": "4654"
+}
+
+### Login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "email": "abdulluhodulate@gmail.com",
+    "password": "password123"
+}
+
+### Refresh Token
+GET http://localhost:3000/api/v1/auth/refresh
+
+
+### Property Management Variables
+@accessToken =    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFiZHVsbHVob2R1bGF0ZUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsInNlc3Npb25JZCI6ImFjYzU2MTZkLTdiOGMtNDY1Yy1iYTYzLTQxYTIzMTdmODE5NyJ9LCJpYXQiOjE3NzU3NDgwMTcsImV4cCI6MTc3NTc0ODkxN30.8vcykMaILy5Lcbvq5PsvazTh0nkHhMr2ZRoCA4gOT50"
+
+@propertyId = YOUR_PROPERTY_ID_HERE
+
+### Create Property
+POST http://localhost:3000/api/v1/properties
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "title": "Luxury Penthouse in Lagos",
+    "description": "A stunning 4-bedroom penthouse with ocean views and modern amenities.",
+    "price": 500000,
+    "type": "APARTMENT",
+    "status": "AVAILABLE",
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "featured": true,
+    "location": {
+        "address": "123 Ocean View Drive",
+        "city": "Lagos",
+        "state": "Lagos",
+        "country": "Nigeria",
+        "latitude": 6.4527,
+        "longitude": 3.3892
+    }
+}
+
+### Get All Properties
+GET http://localhost:3000/api/v1/properties
+Authorization: Bearer {{accessToken}}
+
+### Get Property by ID
+GET http://localhost:3000/api/v1/properties/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+
+### Update Property
+PUT http://localhost:3000/api/v1/properties/{{propertyId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "price": 550000,
+    "status": "PENDING"
+}
+
+### Delete Property
+DELETE http://localhost:3000/api/v1/properties/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Agent Management Variables
+@agentId = YOUR_AGENT_ID_HERE
+
+### Register Agent from Scratch
+POST http://localhost:3000/api/v1/agents/register
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "firstName": "Agent",
+    "lastName": "User",
+    "email": "agent@example.com",
+    "password": "password123",
+    "phone": "08012345678",
+    "bankCode": "044",
+    "accountNumber": "1234567890",
+    "accountName": "Agent User"
+}
+
+### Upgrade to Agent
+POST http://localhost:3000/api/v1/agents/upgrade
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "fullName": "Abdullah Odulate",
+    "email": "abdulluhodulate@gmail.com",
+  "phone": "08012345678",
+    "bankCode": "0446",
+    "accountNumber": "1234567890",
+    "accountName": "Agent User"
+}
+
+### Get Agent Details
+GET http://localhost:3000/api/v1/agents/{{agentId}}
+
+### Get Agent Properties
+GET http://localhost:3000/api/v1/agents/{{agentId}}/properties
+
+
+### Booking Management Variables
+@bookingId = YOUR_BOOKING_ID_HERE
+
+### Schedule Booking
+POST http://localhost:3000/api/v1/bookings
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "properyId": "{{propertyId}}",
+    "date": "2026-05-20T10:00:00Z"
+}
+
+### Get User Bookings
+GET http://localhost:3000/api/v1/bookings
+Authorization: Bearer {{accessToken}}
+
+### Update Booking Status
+PUT http://localhost:3000/api/v1/bookings/{{bookingId}}/APPROVED
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+### Delete Booking
+DELETE http://localhost:3000/api/v1/bookings/{{bookingId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Conversation Management Variables
+@conversationId = YOUR_CONVERSATION_ID_HERE
+@participantId = YOUR_PARTICIPANT_USER_ID
+
+### Create or Get Conversation
+POST http://localhost:3000/api/v1/conversations
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "participantId": "{{participantId}}",
+    "propertyId": "{{propertyId}}"
+}
+
+### Get All User Conversations
+GET http://localhost:3000/api/v1/conversations
+Authorization: Bearer {{accessToken}}
+
+### Get Conversation by ID
+GET http://localhost:3000/api/v1/conversations/{{conversationId}}
+Authorization: Bearer {{accessToken}}
+
+
+### Message Management Variables
+@messageId = YOUR_MESSAGE_ID_HERE
+
+### Send Message
+POST http://localhost:3000/api/v1/messages
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "conversationId": "{{conversationId}}",
+    "content": "Hello, is this property still available?",
+    "type": "MESSAGE"
+}
+
+### Get Conversation Messages
+GET http://localhost:3000/api/v1/messages/conversation/{{conversationId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete Message
+DELETE http://localhost:3000/api/v1/messages/{{messageId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Review Management Variables
+@reviewId = YOUR_REVIEW_ID_HERE
+
+### Add Review
+POST http://localhost:3000/api/v1/reviews
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "propertyId": "{{propertyId}}",
+    "rating": 5,
+    "comment": "Amazing property and great service!"
+}
+
+### Edit Review
+PUT http://localhost:3000/api/v1/reviews
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "reviewId": "{{reviewId}}",
+    "rating": 4,
+    "comment": "Updated: Good property, but slightly far from the city."
+}
+
+### Get Property Reviews
+GET http://localhost:3000/api/v1/reviews/property/{{propertyId}}
+Authorization: Bearer {{accessToken}}
+
+### Get Agent Reviews
+GET http://localhost:3000/api/v1/reviews/agent/{{agentId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete Review
+DELETE http://localhost:3000/api/v1/reviews/{{reviewId}}
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+
+### Friends Management Variables
+@friendUserId = ANOTHER_USER_ID
+
+### Add Friend
+POST http://localhost:3000/api/v1/friends
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+X-CSRF-Token: {{csrfToken}}
+
+{
+    "friendId": "{{friendUserId}}"
+}
+
+### Get Friends List
+GET http://localhost:3000/api/v1/friends
+Authorization: Bearer {{accessToken}}

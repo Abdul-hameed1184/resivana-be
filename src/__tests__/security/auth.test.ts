@@ -151,7 +151,7 @@ describe("Authentication Tests", () => {
       const newPassword = "NewPass456";
       const providedOldPassword = "WrongPassword";
 
-      const matches = providedOldPassword === oldPassword;
+      const matches = (providedOldPassword as string) === (oldPassword as string);
       expect(matches).toBe(false);
     });
 

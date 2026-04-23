@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import csurf from "csurf";
 import cookieParser from "cookie-parser";
@@ -25,9 +25,9 @@ app.use(csrfProtection);
 app.use("/api/v1", v1Routes);
 
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Resivana Backend is running");
-})
+});
 
 // app.use("/api/v2", v2Routes);
 
