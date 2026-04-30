@@ -73,3 +73,20 @@ export const protect = asyncHandler(
         next();
     }
 );
+
+/**
+ * ✅ Middleware to restrict access to certain roles
+ * Must be used AFTER the protect middleware
+ */
+export const restrictTo = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            throw new AppError(
+                "You do not have permission to perform this action",
+                403,
+                "FORBIDDEN"
+            );
+        }
+        next();
+    };
+};

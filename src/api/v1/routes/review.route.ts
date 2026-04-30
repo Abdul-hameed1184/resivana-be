@@ -19,6 +19,7 @@ const router = Router();
  *     tags: [Reviews]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -51,6 +52,7 @@ const router = Router();
  *     tags: [Reviews]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -88,6 +90,7 @@ router.post("/", protect, addReview);
  *     tags: [Reviews]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -171,6 +174,7 @@ router.get("/agent/:agentId", protect, getAgentReviews);
  *     tags: [Reviews]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     parameters:
  *       - in: path
  *         name: reviewId

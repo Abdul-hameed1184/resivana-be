@@ -278,7 +278,7 @@ describe("Validation Tests", () => {
 
     it("should allow optional comment", () => {
       const review1 = { rating: 5, comment: "Great!" };
-      const review2 = { rating: 5 };
+      const review2: { rating: number; comment?: string } = { rating: 5 };
 
       expect(review1).toHaveProperty("comment");
       expect(review2.comment).toBeUndefined();

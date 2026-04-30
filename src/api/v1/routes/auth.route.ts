@@ -59,6 +59,8 @@ router.get("/csrf-token", getCsrfToken);
  *             required:
  *               - email
  *               - password
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Login successful
@@ -89,6 +91,8 @@ router.post("/login", login);
  *               - lastName
  *               - email
  *               - password
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       201:
  *         description: Signup successful
@@ -120,6 +124,8 @@ router.post("/signup", signup);
  *             required:
  *               - email
  *               - otp
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Email verified successfully
@@ -147,6 +153,8 @@ router.post("/verify-email", verifyEmail);
  *               email: { type: string }
  *             required:
  *               - email
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: OTP resent successfully
@@ -166,6 +174,8 @@ router.post("/resend-verify-email", resendEmailVerificationOtp);
  *     summary: Logout user
  *     tags:
  *       - Auth
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Logout successful
@@ -206,6 +216,8 @@ router.get("/refresh", handleRefreshToken);
  *               email: { type: string }
  *             required:
  *               - email
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: OTP sent successfully
@@ -233,6 +245,8 @@ router.post("/forgot-password", forgotPassword);
  *             required:
  *               - email
  *               - otp
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Otp verified successfully
@@ -260,6 +274,8 @@ router.post("/verify-forgot-password", verifyForgotPasswordOtp);
  *             required:
  *               - email
  *               - password
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Password reset successful
@@ -277,6 +293,7 @@ router.post("/reset-password", resetPassword);
  *       - Auth
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -310,6 +327,7 @@ router.patch("/change-password", protect, changePassword);
  *       - Auth
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -364,6 +382,8 @@ router.get("/check-auth", protect, checkAuth);
  *               idToken: { type: string }
  *             required:
  *               - idToken
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Google authentication successful
@@ -391,6 +411,8 @@ router.post("/google", googleAuth);
  *               idToken: { type: string }
  *             required:
  *               - idToken
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Apple authentication successful

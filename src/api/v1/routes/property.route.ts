@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PropertyController } from "../controllers/property.controller";
-import { protect } from "../middleware/auth.middleware";
+import { protect, restrictTo } from "../middleware/auth.middleware";
 import { validate } from "../middlewares/validate.middleware";
 import {
   createPropertySchema,
@@ -160,6 +160,7 @@ router.get(
 router.post(
   "/",
   validate(createPropertySchema),
+  restrictTo("AGENT", "ADMIN"),
   PropertyController.createProperty,
 );
 
@@ -219,6 +220,7 @@ router.post(
 router.put(
   "/:id",
   validate(updatePropertySchema),
+  restrictTo("AGENT", "ADMIN"),
   PropertyController.updateProperty,
 );
 
@@ -252,6 +254,7 @@ router.put(
 router.delete(
   "/:id",
   validate(propertyIdParamSchema),
+  restrictTo("AGENT", "ADMIN"),
   PropertyController.deleteProperty,
 );
 

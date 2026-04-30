@@ -30,6 +30,7 @@ const router = Router();
  *     tags: [Bookings]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -67,6 +68,7 @@ router.get("/", protect, getBookings);
  *     tags: [Bookings]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -104,6 +106,7 @@ router.post("/", protect, scheduleBooking);
  *     tags: [Bookings]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     parameters:
  *       - in: path
  *         name: bookingId
@@ -137,6 +140,7 @@ router.put("/:bookingId/:status", protect, updateBooking);
  *     tags: [Bookings]
  *     security:
  *       - bearerAuth: []
+ *         csrfToken: []
  *     parameters:
  *       - in: path
  *         name: bookingId
