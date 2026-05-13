@@ -70,7 +70,7 @@ export const getBookings = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const updateBooking = asyncHandler(async (req: Request, res: Response) => {
-    
+
     const bookingId = req.params.bookingId as string;
     const status = req.params.status as string;
 
