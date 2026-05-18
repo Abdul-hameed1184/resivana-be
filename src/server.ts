@@ -8,10 +8,6 @@ import { errorHandler } from "./middleware/errorHamdler";
 
 const PORT = process.env.PORT || 5000;
 
-const csrfProtection = csurf({
-  cookie: true,
-});
-
 const app = express();
 
 app.use(
@@ -20,6 +16,7 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static("public"));
@@ -45,15 +42,19 @@ app.get("/api/v1/auth/csrf-token", (req: Request, res: Response, next) => {
   });
 });
 
-// Skip CSRF for OAuth endpoints
+// Apply CSRF protection to all routes except the ones that don't need it
 app.use((req: Request, res: Response, next) => {
+  // Skip CSRF protection for:
+  // 1. GET requests (they are read-only)
+  // 2. OAuth endpoints (they have their own security)
   if (
+    req.method === "GET" ||
     req.path.startsWith("/api/v1/auth/google") ||
     req.path.startsWith("/api/v1/auth/apple")
   ) {
     return next();
   }
-  csrfProtectionWithBypass(req, res, next);
+  csrfProtection(req, res, next);
 });
 
 // Versioned routes
