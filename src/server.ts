@@ -27,7 +27,11 @@ app.use(express.static("public"));
 // Apply CSRF protection with custom error handling for initial token generation
 // This middleware initializes req.csrfToken() but doesn't fail if token is invalid initially
 const csrfProtectionWithBypass = csurf({
-  cookie: true,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  },
 });
 
 // Special handler for csrf-token endpoint - initialize CSRF but don't validate
